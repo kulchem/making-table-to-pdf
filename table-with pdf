@@ -1,0 +1,89 @@
+public class Test2 
+{
+    public static void main(String[] args) throws Exception
+    {
+        String[][] data= 
+        {
+            { "Emine","Civas", "i.am@live.jp" },
+            { "Onur","Rokovet", "roko@gmail.com" },
+            { "Emine","Civas", "i.am@live.jp" },
+            { "Onur","Rokovet", "roko@gmail.com" },
+            { "Emine","Civas", "i.am@live.jp" },
+            { "Onur","Rokovet", "roko@gmail.com" },
+            { "Emine","Civas", "i.am@live.jp" },
+            { "Onur","Rokovet", "roko@gmail.com" },
+            { "Emine","Civas", "i.am@live.jp" },
+            { "Onur","Rokovet", "roko@gmail.com" },
+            { "Emir","Civas", "i.am@live.jp" },
+            { "Onur","Rokovet", "roko@gmail.com" },
+            { "Emir","Civas", "i.am@live.jp" },
+            { "Onur","Rokovet", "roko@gmail.com" }
+            
+        };
+        String basliklar[] = { "AD", "SOYAD", "E-POSTA" };
+        
+        // 1 - Document Olustur
+        Document doc = 
+           new Document();
+        
+        // 2 - PDF Yaziciyi Ayarla & Document'i Ac
+        PdfWriter.getInstance(doc, 
+                    new FileOutputStream(new File("test.pdf")));
+        
+        doc.open();
+        
+        // 3 - PDF ICERIGINI AYARLA
+        Image logo = Image.getInstance(new URL("http://icdn.pro/images/en/t/u/tux-penguin-chat-icone-7042-128.png"));
+        logo.setAlignment(Image.ALIGN_LEFT);
+        doc.add(logo);
+        
+        
+        PdfPTable tbl = new PdfPTable(new float[] {2,2,3});
+        
+        for (int i = 0; i<basliklar.length; i++)
+        {
+            PdfPCell cell = new PdfPCell();
+            cell.setBackgroundColor(BaseColor.LIGHT_GRAY);
+            Paragraph  p = new Paragraph(basliklar[i]);
+            Font pFont = p.getFont();
+            pFont.setSize(24);
+            pFont.setStyle(Font.BOLD);
+            pFont.setColor(BaseColor.WHITE);
+            p.setAlignment(Paragraph.ALIGN_CENTER);
+            
+            
+            cell.addElement(p);
+            tbl.addCell(cell);
+        }
+        
+        
+        // Verileri Ekle
+        for (int i = 0; i<data.length; i++)
+        {
+            BaseColor bg = BaseColor.WHITE;
+            if (i%2 == 1)
+                bg = BaseColor.CYAN;
+            
+            for (int j = 0; j<data[i].length; j++)
+            {
+                PdfPCell c = new PdfPCell();
+                c.setBackgroundColor(bg);
+                Paragraph p = new Paragraph(data[i][j]);
+                p.setAlignment(Paragraph.ALIGN_CENTER);
+                c.addElement(p);
+                tbl.addCell(c);
+            }
+        }
+        
+        // Ici Doldurulmus Tabloyu DOCUMENT'e Ekle
+        doc.add(tbl);
+        
+        
+        
+        
+        // PDF'i Kaydet
+        doc.close();
+        
+        
+    }
+}
